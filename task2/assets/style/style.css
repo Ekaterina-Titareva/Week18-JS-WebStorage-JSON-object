@@ -25,16 +25,6 @@ gap: 20px;
     cursor: pointer;
 }
 
-/* Эффект при наведении курсора */
-.btn:hover {
-    background: linear-gradient(to bottom, #2980b9, #3498db);
-}
-
-/* Эффект при нажатии кнопки */
-.btn:active {
-    background: linear-gradient(to bottom, #1a557c, #27a21b);
-}
-
 .tasks {
 display: flex;
 flex-direction: column;
@@ -74,4 +64,21 @@ background-color: #297fb934;
 .completed::after {
     content: url(../icons/check-mark.svg);
     padding: 0 5px;
+}
+
+button:disabled{
+    padding: 10px 20px;
+    margin: 10px 20px;
+    background: gray;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    cursor: unset;
+}
+
+.noTasks {
+    align-self: center;
+    color: gray;
 }
