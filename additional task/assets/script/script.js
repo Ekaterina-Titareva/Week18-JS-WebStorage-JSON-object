@@ -126,65 +126,70 @@ data.forEach(item => {
             <img class="card__image" alt="photo of the hero" src="${item.url}"></img>
             <p class="card__info">Дополнительная информация: ${item.info}</p>
             <div class="rating">
-                <span class="star" name="${item.name}" onclick="getRating(this)" value="1">&#9734</span>
-                <span class="star" name="${item.name}" onclick="getRating(this)" value="2">&#9734</span>
-                <span class="star" name="${item.name}" onclick="getRating(this)" value="3">&#9734</span>
-                <span class="star" name="${item.name}" onclick="getRating(this)" value="4">&#9734</span>
-                <span class="star" name="${item.name}" onclick="getRating(this)" value="5">&#9734</span>
+                <input type="radio" id="${item.name}5" class="star" name="${item.name}" onclick="getRating(this)" value="5"></input>
+                <label for="${item.name}5" title="Оценка «5»"></label>
+                <input type="radio" id="${item.name}4" class="star" name="${item.name}" onclick="getRating(this)" value="4"></input>
+                <label for="${item.name}4" title="Оценка «4»"></label>
+                <input type="radio" id="${item.name}3" class="star" name="${item.name}" onclick="getRating(this)" value="3"></input>
+                <label for="${item.name}3" title="Оценка «3»"></label>
+                <input type="radio" id="${item.name}2" class="star" name="${item.name}" onclick="getRating(this)" value="2"></input>
+                <label for="${item.name}2" title="Оценка «2»"></label>
+                <input type="radio" id="${item.name}1" class="star" name="${item.name}" onclick="getRating(this)" value="1"></input>
+                <label for="${item.name}1" title="Оценка «1»"></label>
             </div>
         </div>
     `
 
 });
 
-
-
-function getRating(star) {
-    console.log(`Рейтинг героя ${star.attributes.name.value} равен: ${star.attributes.value.value}`);
-    let jsonRating = localStorage.getItem('rating');
-    jsonRating = jsonRating ? JSON.parse(jsonRating) : [];
-    let index = jsonRating.findIndex(item => item.includes(star.attributes.name.value));
-    if (index === -1) {
-        jsonRating.push(`${star.attributes.name.value}:${star.attributes.value.value}`);
-        let starsOfHero = document.getElementsByName(`${star.attributes.name.value}`)
-        for (let index = 0; index < 5; index++){
-            starsOfHero[index].textContent = "☆"; 
-        }
-        for (let index = 0; index < (star.attributes.value.value); index++){
-            starsOfHero[index].textContent = "★"; }
-    } else {
-        jsonRating[index] = `${star.attributes.name.value}:${star.attributes.value.value}`;
-        let starsOfHero = document.getElementsByName(`${star.attributes.name.value}`)
-        for (let index = 0; index < 5; index++){
-            starsOfHero[index].textContent = "☆"; 
-        }
-        for (let index = 0; index < (star.attributes.value.value); index++){
-            starsOfHero[index].textContent = "★"; }
-        }
-    localStorage.setItem('rating', JSON.stringify(jsonRating));
-
+function findNameOfHero(array, substring) {
+    for (let i = 0; i < array.length; i++) {
+    const string = array[i];
+    const index = string.indexOf(substring);
+    
+    if (index !== -1 && index < string.length - 1) {
+        const nextChar = string[string.length-1];
+        return nextChar;
+    }
+    }
+    
+    return null; 
 }
 
 
-// mouseover
+
+const names = document.getElementsByClassName("card__name");
+let namesList = [];
+
+for (let name of names) {
+    namesList.push(name.textContent);
+}
+
+let jsonRating = localStorage.getItem('rating');
+jsonRating = jsonRating ? JSON.parse(jsonRating) : [];
+
+if (jsonRating && jsonRating.length > 0) {
+    for (let name of namesList){
+    //если оценки есть в локальной памяти, то они покажутся после обновления страницы
+            let nextChar = findNameOfHero(jsonRating, name);
+            if (nextChar != null) {
+                let input = document.getElementById(`${name}${nextChar}`);
+                input.checked = true;
+            }
+        }
+}
 
 
-// const names = document.getElementsByClassName("card__name");
-// let namesList = [];
 
-// for (let name of names) {
-//     namesList.push(name.textContent);
-// }
+function getRating(star) {
+    let jsonRatingLocal = localStorage.getItem('rating');
+    jsonRatingLocal = jsonRatingLocal ? JSON.parse(jsonRatingLocal) : [];
+    let index = jsonRatingLocal.findIndex(item => item.includes(star.attributes.name.value));
+    if (index === -1) {
+        jsonRatingLocal.push(`${star.attributes.name.value}:${star.attributes.value.value}`);
+    } else {
+        jsonRatingLocal[index] = `${star.attributes.name.value}:${star.attributes.value.value}`;
+        }
+    localStorage.setItem('rating', JSON.stringify(jsonRatingLocal));
+}
 
-
-// function findSubstringAndNextChar(array, substring) {
-//     for (let i = 0; i < array.length; i++) {
-//       const string = array[i];
-//       const index = string.indexOf(substring);
-//       if (index !== -1 && index < string.length - 1) {
-//         const nextChar = string[index + 1];
-//         return nextChar;
-//       }
-//     }
-//     return null; // Return null if substring is not found or if it's the last character in any string
-//   }

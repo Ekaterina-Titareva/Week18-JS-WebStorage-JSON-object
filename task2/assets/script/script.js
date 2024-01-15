@@ -32,10 +32,10 @@ function createTask() {
 		taskList.innerHTML += `
 		<li class="taskList__item">${textOfNewElement.value}</li>`
 		//сохраняем задачу в локальную память
-		let jsonTaskList = localStorage.getItem('taskList');
-		jsonTaskList = jsonTaskList ? JSON.parse(jsonTaskList) : [];
-		jsonTaskList.push(textOfNewElement.value);
-		localStorage.setItem('taskList', JSON.stringify(jsonTaskList));
+		let jsonTaskListLocal = localStorage.getItem('taskList');
+		jsonTaskListLocal = jsonTaskListLocal ? JSON.parse(jsonTaskListLocal) : [];
+		jsonTaskListLocal.push(textOfNewElement.value);
+		localStorage.setItem('taskList', JSON.stringify(jsonTaskListLocal));
 		console.log(`The task "${textOfNewElement.value}" added to to do list and saved in the Local Storage.`);
 		//очищаем поле ввода
 		textOfNewElement.value = '';
